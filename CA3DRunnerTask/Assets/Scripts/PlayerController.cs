@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Dreamteck.Splines;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,10 +13,13 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Animator anim;
     bool isGround = true;
+    bool isHitObstacle = false;
+    SplineFollower follower;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        follower = GetComponentInParent<SplineFollower>();
     }
 
     // Update is called once per frame
@@ -33,8 +38,26 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        if (other.transform.CompareTag("Ground")) {
+        if (other.transform.CompareTag("Road")) {
             isGround = true;
         }
+
+        if (other.transform.CompareTag("Ground")) {
+            anim.SetTrigger("FallOnGround");
+            follower.followSpeed = 0;
+            Invoke("Restart", 3.5f);
+        }
+
+        if (other.transform.CompareTag("Obstacle") && !isHitObstacle) {
+            isHitObstacle = true;
+            anim.SetTrigger("FallOnRoad");
+            follower.followSpeed = 0;
+            Invoke("Restart", 3.5f);
+        }
     }
+
+    void Restart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }
