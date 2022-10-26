@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - Road
   - Obstacle
+  - SplineFollower
+  - Collectable
+  - Collected
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Collectable
   - 
   - 
   - 

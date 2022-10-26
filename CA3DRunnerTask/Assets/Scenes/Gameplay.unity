@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3465,7 +3465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &271039100
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3822,6 +3822,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HorizontalMultiplier: 1.2
   JumpForce: 6
+  detectTransform: {fileID: 0}
+  DetectionRange: 1
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
+  holdTransform: {fileID: 0}
+  ItemCount: 0
+  ItemDistanceBetween: 0.5
 --- !u!54 &916833138
 Rigidbody:
   m_ObjectHideFlags: 0

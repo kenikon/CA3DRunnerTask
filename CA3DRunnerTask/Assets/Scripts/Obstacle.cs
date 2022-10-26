@@ -14,7 +14,7 @@ public class Obstacle : MonoBehaviour
         //     .SetLoops(-1,LoopType.Yoyo);
 
 
-        transform.DOMoveX(7,CicleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+        // transform.DOMoveX(0.5f,CicleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
         transform.DORotate(new Vector3(0,360,0),CicleLength * 0.7f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear).SetLoops(-1,LoopType.Restart);
 
