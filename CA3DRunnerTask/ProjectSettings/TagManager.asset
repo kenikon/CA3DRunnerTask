@@ -10,6 +10,9 @@ TagManager:
   - SplineFollower
   - Collectable
   - Collected
+  - DropArea
+  - Cinemachine
+  - FinishLine
   layers:
   - Default
   - TransparentFX
@@ -18,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Collectable
-  - 
+  - DropArea
   - 
   - 
   - 
