@@ -18,15 +18,12 @@ public class DroneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.position = Vector3.Lerp(transform.position, PlayerTransform.position, 1f * Time.deltaTime);
-
-
         newPosX = transform.localPosition;
         newPosX.x = Mathf.Lerp(transform.localPosition.x, PlayerTransform.localPosition.x, Time.deltaTime * 3f);
         // transform.localPosition = newPosX;
 
         newPosY = transform.localPosition;
-        newPosY.y = Mathf.Lerp(transform.localPosition.y + offsetY, PlayerTransform.localPosition.y, Time.deltaTime * 3f);
+        newPosY.y = Mathf.Lerp(transform.localPosition.y, PlayerTransform.localPosition.y + offsetY, Time.deltaTime * 3f);
         // transform.localPosition = newPosY;
 
         transform.localPosition = new Vector3(newPosX.x,newPosY.y, offsetZ);

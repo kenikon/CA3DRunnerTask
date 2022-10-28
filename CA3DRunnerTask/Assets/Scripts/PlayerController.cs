@@ -49,11 +49,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Horizontal = Input.GetAxis("Horizontal");
+        transform.localPosition += new Vector3(Horizontal * 5, 0, 0) * Time.fixedDeltaTime * HorizontalMultiplier;
+
         colliders = Physics.OverlapSphere(detectTransform.position, DetectionRange, layer);
 
         foreach (var hit in colliders)
         {
             if (hit.CompareTag("Collectable")) {
+                hit.transform.GetChild(0).gameObject.SetActive(false);
                 Debug.Log(hit.name);
                 hit.tag = "Collected";
                 hit.transform.parent = holdTransform;
@@ -79,44 +84,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
-        Horizontal = Input.GetAxis("Horizontal");
-        transform.localPosition += new Vector3(Horizontal * 5, 0, 0) * Time.fixedDeltaTime * HorizontalMultiplier;
-    }
-
     private void OnTriggerStay(Collider other) {
-        // TransPoser.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetOnAssign;
-        // transform.Rotate(0, 180, 0);
         if (other.transform.CompareTag("DropArea")) {
 
             isGroundActive = false;
 
-        if (Time.time >= NextDropTime) {
-            // if (CollectedItems.Count <= 0) return;
-            if (CollectedItems.Count > 0) {
-                GameObject go = CollectedItems[CollectedItems.Count - 1];
-                go.transform.GetComponent<Collider>().isTrigger = false;
-                go.transform.parent = DropAreaTransform;
-                var Seq = DOTween.Sequence();
-                Seq.Append(go.transform.DOJump(DropAreaTransform.position + new Vector3(0, DropCount * DropDistanceBetween), 2, 1, 0.3f)
-                    .Join(go.transform.DOScale(1.5f, 0.1f))
-                    .Insert(0.1f, go.transform.DOScale(1f, 0.2f))
-                    .AppendCallback(() => {
-                        go.transform.rotation = Quaternion.Euler(0,0,0);
-                    }));
+            if (Time.time >= NextDropTime) {
+                if (CollectedItems.Count <= 0) return;
+                if (CollectedItems.Count > 0) {
+                    GameObject go = CollectedItems[CollectedItems.Count - 1];
+                    go.transform.GetComponent<Collider>().isTrigger = false;
+                    go.transform.parent = DropAreaTransform;
+                    var Seq = DOTween.Sequence();
+                    Seq.Append(go.transform.DOJump(DropAreaTransform.position + new Vector3(0, DropCount * DropDistanceBetween), 2, 1, 0.3f)
+                        .Join(go.transform.DOScale(1.5f, 0.1f))
+                        .Insert(0.1f, go.transform.DOScale(1f, 0.2f))
+                        .AppendCallback(() => {
+                            go.transform.localRotation = Quaternion.Euler(0,0,0);
+                        }));
 
-                DropCount++;
-                CollectedItems.Remove(go);
-                ItemCount--;
+                    DropCount++;
+                    CollectedItems.Remove(go);
+                    ItemCount--;
 
-                NextDropTime = Time.time + DropSecond / DropRate;
-                if (ItemCount == 0) {
-                    // TransPoser.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetOnAssign;
-                    // vCam.transform.parent = null;
-                    transform.Rotate(0, 180, 0);
+                    NextDropTime = Time.time + DropSecond / DropRate;
                 }
             }
-        }
+            if (ItemCount == 0) {
+                TransPoser.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetOnAssign;
+                vCam.transform.parent = null;
+                TransPoser.m_FollowOffset.x = 3.5f;
+                transform.Rotate(0, 180, 0);
+            }
 
         }
     }
@@ -129,6 +128,7 @@ public class PlayerController : MonoBehaviour
         if (other.transform.CompareTag("Ground") && isGroundActive) {
             anim.SetTrigger("FallOnGround");
             follower.followSpeed = 0;
+            HorizontalMultiplier = 0;
             Invoke("Restart", 3.5f);
         }
 
@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
             isHitObstacle = true;
             anim.SetTrigger("FallOnRoad");
             follower.followSpeed = 0;
+            HorizontalMultiplier = 0;
             Invoke("Restart", 3.5f);
         }
 
@@ -145,6 +146,7 @@ public class PlayerController : MonoBehaviour
         if (other.transform.CompareTag("FinishLine")) {
             anim.SetTrigger("Dance");
             follower.followSpeed = 0;
+            HorizontalMultiplier = 0;
         }
     }
 
