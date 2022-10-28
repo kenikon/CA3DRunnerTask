@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log(hit.name);
                 hit.tag = "Collected";
                 hit.transform.parent = holdTransform;
+                hit.isTrigger = true;
 
                 var seq = DOTween.Sequence();
                 seq.Append(hit.transform.DOLocalJump(new Vector3(0, ItemCount*ItemDistanceBetween), 2, 1, 0.3f))
@@ -94,6 +95,7 @@ public class PlayerController : MonoBehaviour
             // if (CollectedItems.Count <= 0) return;
             if (CollectedItems.Count > 0) {
                 GameObject go = CollectedItems[CollectedItems.Count - 1];
+                go.transform.GetComponent<Collider>().isTrigger = false;
                 go.transform.parent = DropAreaTransform;
                 var Seq = DOTween.Sequence();
                 Seq.Append(go.transform.DOJump(DropAreaTransform.position + new Vector3(0, DropCount * DropDistanceBetween), 2, 1, 0.3f)
