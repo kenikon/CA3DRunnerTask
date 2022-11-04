@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
 
         Horizontal = Input.GetAxis("Horizontal");
-        transform.localPosition += new Vector3(Horizontal * 5, 0, 0) * Time.fixedDeltaTime * HorizontalMultiplier;
+        transform.localPosition += new Vector3(Horizontal, 0, 0) * HorizontalMultiplier * Time.deltaTime;
 
         colliders = Physics.OverlapSphere(detectTransform.position, DetectionRange, layer);
 
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.CompareTag("Collectable")) {
                 hit.transform.GetChild(0).gameObject.SetActive(false);
-                Debug.Log(hit.name);
+                // Debug.Log(hit.name);
                 hit.tag = "Collected";
                 hit.transform.parent = holdTransform;
                 hit.isTrigger = true;
